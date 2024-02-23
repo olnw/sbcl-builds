@@ -34,7 +34,6 @@ jobs:
           git
           zip
           unzip
-          curl
           mingw-w64-ucrt-x86_64-gcc
           
     - name: Build SBCL
