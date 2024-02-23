@@ -7,9 +7,6 @@ on: push
 jobs:
   build:
     name: Build
-    defaults:
-      run:
-        shell: msys2 {0}
     steps:
     # SBCL on Windows does not support CRLF.
     - name: Ensure LF line endings
@@ -29,8 +26,7 @@ jobs:
       # will this work in msys shell?
       run: echo "SBCL_HASH=$(cd sbcl && git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-    - name: Build SBCL
-      uses: msys2/setup-msys2@v2
+    - uses: msys2/setup-msys2@v2
       with:
         msystem: UCRT64
         update: true
@@ -39,10 +35,17 @@ jobs:
           unzip
           curl
           mingw-w64-ucrt-x86_64-gcc
-        run: cd sbcl-builds && unzip sbcl-2.3.2.zip
-        run: cd sbcl-source && SBCL_HOME=../sbcl-builds sh make.sh --prefix=../build --xc-host=../sbcl-builds/sbcl.exe
-        run: cd sbcl-source && sh install.sh
-        run: zip -r sbcl-w64-ucrt-$SBCL_HASH.zip build
+          
+    - shell: msys2 {0}
+      run: |
+           cd sbcl-builds 
+           unzip sbcl-2.3.2.zip
+           cd ../sbcl-source
+           SBCL_HOME=../sbcl-builds sh make.sh --prefix=../build --xc-host=../sbcl-builds/sbcl.exe
+           unset SBCL_HOME
+           sh install.sh
+    
+    - run: zip -r sbcl-w64-ucrt-$SBCL_HASH.zip build
 
 # Focus on getting the build working for now
 #  release:
