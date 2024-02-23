@@ -23,7 +23,7 @@ jobs:
       with:
         repository: sbcl/sbcl
         path: sbcl-source
-        # Make sure we don't do a valid clone.
+        # Make sure we don't do a shallow clone.
         # We need the full commit history, as this is required by 'git describe',
         # which is called by generate-version.sh.
         fetch-depth: 0
