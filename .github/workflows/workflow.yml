@@ -23,6 +23,10 @@ jobs:
       with:
         repository: sbcl/sbcl
         path: sbcl-source
+        # Make sure we don't do a valid clone.
+        # We need the full commit history, as this is required by 'git describe',
+        # which is called by generate-version.sh.
+        fetch-depth: 0
 
     - name: Set up MSYS2
       uses: msys2/setup-msys2@v2
@@ -44,7 +48,6 @@ jobs:
            unzip sbcl-2.3.2.zip
            cd ../sbcl-source
            export SBCL_HOME=../sbcl-builds
-           echo $(git describe) > version.lisp-expr # For some reason generate-version.sh can't find git
            sh make.sh --prefix=../build --xc-host=$SBCL_HOME/sbcl.exe
            unset SBCL_HOME
            sh install.sh   
