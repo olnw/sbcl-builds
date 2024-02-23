@@ -1,8 +1,8 @@
 name: Build and release
 
-on: push
-#  schedule:
-#  - cron: "0 0 * * *"
+on:
+  schedule:
+  - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -67,6 +67,3 @@ jobs:
            gh release create SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH --notes "Source: https://github.com/sbcl/sbcl" ../sbcl-ucrt64-$SBCL_HASH.zip
       env:
         GITHUB_TOKEN: ${{ secrets.SBCL_BUILDS_TOKEN }}
-
-# TELL USER IN README TO SET SBCL_HOME!
-# include source code in release assets too
