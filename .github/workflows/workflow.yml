@@ -1,8 +1,8 @@
 name: Build and Release
 
 on: push
-//  schedule:
-//  - cron: "0 0 * * *"
+#  schedule:
+#  - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -11,7 +11,7 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
-    // SBCL on Windows does not support CRLF.
+    # SBCL on Windows does not support CRLF.
     - name: Ensure LF line endings
       run: git config --global core.autocrlf input
       
@@ -23,10 +23,10 @@ jobs:
       with:
         repository: sbcl/sbcl
         path: sbcl-source
-        // IDK if necessary // token: ${{ secrets.my_pat }}
+        # IDK if necessary # token: ${{ secrets.my_pat }}
 
     - name: Set environment variables
-      // will this work in msys shell?
+      # will this work in msys shell?
       run: echo "SBCL_HASH=$(cd sbcl && git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: Build SBCL
@@ -44,11 +44,9 @@ jobs:
         run: cd sbcl-source && sh install.sh
         run: zip -r sbcl-w64-ucrt-$SBCL_HASH.zip build
 
-// Focus on getting the build working for now
-//  release:
-//    name: Release
-//    needs: build
+# Focus on getting the build working for now
+#  release:
+#    name: Release
+#    needs: build
 
-// TELL USER IN README TO SET SBCL_HOME!
-
-
+# TELL USER IN README TO SET SBCL_HOME!
