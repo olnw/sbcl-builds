@@ -41,7 +41,8 @@ jobs:
            cd sbcl-builds 
            unzip sbcl-2.3.2.zip
            cd ../sbcl-source
-           SBCL_HOME=../sbcl-builds sh make.sh --prefix=../build --xc-host=$SBCL_HOME/sbcl.exe
+           export SBCL_HOME=../sbcl-builds
+           sh make.sh --prefix=../build --xc-host=$SBCL_HOME/sbcl.exe
            unset SBCL_HOME
            sh install.sh   
            cd "$GITHUB_WORKSPACE"
