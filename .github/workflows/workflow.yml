@@ -58,12 +58,17 @@ jobs:
            sh install.sh   
            cd "$GITHUB_WORKSPACE"
            zip -r sbcl-ucrt64-$SBCL_HASH.zip build
-           
+
+    - name: Generate release tag
+      id: tag
+      shell: msys2 {0}
+      run: echo "::set-output name=release_tag::SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH"
+
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
         files: sbcl-ucrt64-${{ env.SBCL_HASH }}.zip
-        name: SBCL ${{ env.SBCL_HASH }} master
         body: "Source: https://github.com/sbcl/sbcl"
         token: ${{ secrets.SBCL_BUILDS_TOKEN }}
         fail_on_unmatched_files: true
