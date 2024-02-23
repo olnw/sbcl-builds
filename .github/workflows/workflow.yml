@@ -1,0 +1,54 @@
+name: Build and Release
+
+on: push
+//  schedule:
+//  - cron: "0 0 * * *"
+
+jobs:
+  build:
+    name: Build
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+    // SBCL on Windows does not support CRLF.
+    - name: Ensure LF line endings
+      run: git config --global core.autocrlf input
+      
+    - name: Check out sbcl-builds
+      uses: actions/checkout@v4
+
+    - name: Check out SBCL mirror
+      uses: actions/checkout@v4
+      with:
+        repository: sbcl/sbcl
+        path: sbcl-source
+        // IDK if necessary // token: ${{ secrets.my_pat }}
+
+    - name: Set environment variables
+      // will this work in msys shell?
+      run: echo "SBCL_HASH=$(cd sbcl && git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+    - name: Build SBCL
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: UCRT64
+        update: true
+        install: >-
+          zip
+          unzip
+          curl
+          mingw-w64-ucrt-x86_64-gcc
+        run: cd sbcl-builds && unzip sbcl-2.3.2.zip
+        run: cd sbcl-source && SBCL_HOME=../sbcl-builds sh make.sh --prefix=../build --xc-host=../sbcl-builds/sbcl.exe
+        run: cd sbcl-source && sh install.sh
+        run: zip -r sbcl-w64-ucrt-$SBCL_HASH.zip build
+
+// Focus on getting the build working for now
+//  release:
+//    name: Release
+//    needs: build
+
+// TELL USER IN README TO SET SBCL_HOME!
+
+
