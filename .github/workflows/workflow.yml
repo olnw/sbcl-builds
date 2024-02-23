@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and release
 
 on: push
 #  schedule:
@@ -27,6 +27,12 @@ jobs:
         # We need the full commit history, as this is required by 'git describe',
         # which is called by generate-version.sh.
         fetch-depth: 0
+        
+    - name: Set environment variables
+      run: |
+           $SBCL_HASH = Set-Location -Path .\sbcl-source; git rev-parse --short HEAD
+           Write-Output ("SBCL_HASH=" + $SBCL_HASH) | Out-File -FilePath $env:GITHUB_ENV -Append
+           Write-Output ("SBCL_HOME=" + $env:GITHUB_WORKSPACE + "\sbcl-builds") | Out-File -FilePath $env:GITHUB_ENV -Append
 
     - name: Set up MSYS2
       uses: msys2/setup-msys2@v2
@@ -47,16 +53,16 @@ jobs:
            cd sbcl-builds 
            unzip sbcl-2.3.2.zip
            cd ../sbcl-source
-           export SBCL_HOME=../sbcl-builds
            sh make.sh --prefix=../build --xc-host=$SBCL_HOME/sbcl.exe
            unset SBCL_HOME
            sh install.sh   
            cd "$GITHUB_WORKSPACE"
-           zip -r sbcl-ucrt64-$(cd sbcl-source && git rev-parse --short HEAD).zip build
-
-# Focus on getting the build working for now
-#  release:
-#    name: Release
-#    needs: build
+           zip -r sbcl-ucrt64-$SBCL_HASH.zip build
+           
+#    - name: Release
+#      uses: softprops/action-gh-release@v1
+#      with:
+#        files: 
+    
 
 # TELL USER IN README TO SET SBCL_HOME!
