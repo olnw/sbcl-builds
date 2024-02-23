@@ -7,6 +7,7 @@ on: push
 jobs:
   build:
     name: Build
+    runs-on: ubuntu-latest
     steps:
     # SBCL on Windows does not support CRLF.
     - name: Ensure LF line endings
