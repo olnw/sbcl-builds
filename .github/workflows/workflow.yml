@@ -27,12 +27,6 @@ jobs:
         # We need the full commit history, as this is required by 'git describe',
         # which is called by generate-version.sh.
         fetch-depth: 0
-        
-    - name: Set environment variables
-      run: |
-           $SBCL_HASH = Set-Location -Path .\sbcl-source; git rev-parse --short HEAD
-           Write-Output ("SBCL_HASH=" + $SBCL_HASH) | Out-File -FilePath $env:GITHUB_ENV -Append
-           Write-Output ("SBCL_HOME=" + $env:GITHUB_WORKSPACE + "\sbcl-builds") | Out-File -FilePath $env:GITHUB_ENV -Append
 
     - name: Set up MSYS2
       uses: msys2/setup-msys2@v2
@@ -45,7 +39,14 @@ jobs:
           zip
           unzip
           mingw-w64-ucrt-x86_64-gcc
-          
+          mingw-w64-ucrt-x86_64-github-cli
+
+    - name: Set environment variables
+      shell: msys2 {0}
+      run: |
+           echo "SBCL_HASH=$(cd sbcl-source && git rev-parse --short HEAD)" >> $GITHUB_ENV
+           echo "SBCL_HOME=$GITHUB_WORKSPACE/sbcl-builds" >> $GITHUB_ENV
+
     - name: Build SBCL
       shell: msys2 {0}
       run: |
@@ -59,19 +60,11 @@ jobs:
            cd "$GITHUB_WORKSPACE"
            zip -r sbcl-ucrt64-$SBCL_HASH.zip build
 
-    - name: Generate release tag
-      id: tag
-      shell: msys2 {0}
-      run: echo "::set-output name=release_tag::SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH"
-
     - name: Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
-        files: sbcl-ucrt64-${{ env.SBCL_HASH }}.zip
-        body: "Source: https://github.com/sbcl/sbcl"
-        token: ${{ secrets.SBCL_BUILDS_TOKEN }}
-        fail_on_unmatched_files: true
-        generate_release_notes: false
-        
+      shell: msys2 {0}
+      run: gh release create SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH --notes "Source: https://github.com/sbcl/sbcl" sbcl-ucrt64-$SBCL_HASH.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.SBCL_BUILDS_TOKEN }}
+
 # TELL USER IN README TO SET SBCL_HOME!
+# include source code in release assets too
