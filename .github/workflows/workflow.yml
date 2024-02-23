@@ -7,7 +7,7 @@ on: push
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     # SBCL on Windows does not support CRLF.
     - name: Ensure LF line endings
@@ -44,9 +44,8 @@ jobs:
            cd ../sbcl-source
            SBCL_HOME=../sbcl-builds sh make.sh --prefix=../build --xc-host=../sbcl-builds/sbcl.exe
            unset SBCL_HOME
-           sh install.sh
-    
-    - run: zip -r sbcl-w64-ucrt-$SBCL_HASH.zip build
+           sh install.sh   
+           zip -r sbcl-w64-ucrt-$SBCL_HASH.zip build
 
 # Focus on getting the build working for now
 #  release:
