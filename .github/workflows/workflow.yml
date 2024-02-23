@@ -63,7 +63,8 @@ jobs:
     - name: Release
       shell: msys2 {0}
       run: |
-           gh release create SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH --notes "Source: https://github.com/sbcl/sbcl" sbcl-ucrt64-$SBCL_HASH.zip
+           cd sbcl-builds
+           gh release create SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH --notes "Source: https://github.com/sbcl/sbcl" ../sbcl-ucrt64-$SBCL_HASH.zip
       env:
         GITHUB_TOKEN: ${{ secrets.SBCL_BUILDS_TOKEN }}
 
