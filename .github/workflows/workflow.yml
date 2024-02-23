@@ -39,10 +39,12 @@ jobs:
     - name: Build SBCL
       shell: msys2 {0}
       run: |
+           echo CURRENT DIR: $(pwd), WORKSPACE DIR: $GITHUB_WORKSPACE
            cd sbcl-builds 
            unzip sbcl-2.3.2.zip
            cd ../sbcl-source
            export SBCL_HOME=../sbcl-builds
+           echo $(git describe) > version.lisp-expr # For some reason generate-version.sh can't find git
            sh make.sh --prefix=../build --xc-host=$SBCL_HOME/sbcl.exe
            unset SBCL_HOME
            sh install.sh   
