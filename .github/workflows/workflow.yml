@@ -21,13 +21,9 @@ jobs:
       with:
         repository: sbcl/sbcl
         path: sbcl-source
-        # IDK if necessary # token: ${{ secrets.my_pat }}
 
-    - name: Set environment variables
-      # will this work in msys shell?
-      run: echo "SBCL_HASH=$(cd sbcl && git rev-parse --short HEAD)" >> $GITHUB_ENV
-
-    - uses: msys2/setup-msys2@v2
+    - name: Set up MSYS2
+      uses: msys2/setup-msys2@v2
       with:
         msystem: UCRT64
         update: true
@@ -37,15 +33,17 @@ jobs:
           curl
           mingw-w64-ucrt-x86_64-gcc
           
-    - shell: msys2 {0}
+    - name: Build SBCL
+      shell: msys2 {0}
       run: |
            cd sbcl-builds 
            unzip sbcl-2.3.2.zip
            cd ../sbcl-source
-           SBCL_HOME=../sbcl-builds sh make.sh --prefix=../build --xc-host=../sbcl-builds/sbcl.exe
+           SBCL_HOME=../sbcl-builds sh make.sh --prefix=../build --xc-host=$SBCL_HOME/sbcl.exe
            unset SBCL_HOME
            sh install.sh   
-           zip -r sbcl-w64-ucrt-$SBCL_HASH.zip build
+           cd "$GITHUB_WORKSPACE"
+           zip -r sbcl-ucrt64-$(cd sbcl-source && git rev-parse --short HEAD).zip build
 
 # Focus on getting the build working for now
 #  release:
