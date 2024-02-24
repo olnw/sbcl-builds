@@ -58,13 +58,13 @@ jobs:
            sh make.sh --prefix=../build --xc-host=$SBCL_HOME/sbcl.exe
            unset SBCL_HOME
            sh install.sh   
-           cd "$GITHUB_WORKSPACE"
-           zip -r sbcl-ucrt64-$SBCL_HASH.zip build
+           cd "$GITHUB_WORKSPACE"/build
+           zip -r sbcl-ucrt64-$SBCL_HASH.zip *
 
     - name: Release
       shell: msys2 {0}
       run: |
            cd sbcl-builds
-           gh release create SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH --notes "Source: https://github.com/sbcl/sbcl" ../sbcl-ucrt64-$SBCL_HASH.zip
+           gh release create SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH --notes "Source: https://github.com/sbcl/sbcl" ../build/sbcl-ucrt64-$SBCL_HASH.zip
       env:
         GITHUB_TOKEN: ${{ secrets.SBCL_BUILDS_TOKEN }}
