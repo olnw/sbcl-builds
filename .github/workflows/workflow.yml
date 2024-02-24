@@ -71,7 +71,7 @@ jobs:
       shell: msys2 {0}
       run: >
            cd sbcl-builds &&
-           gh release create TEST-RELEASE-SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH
+           gh release create SBCL-$(date +"%Y.%m.%d")-$SBCL_HASH
            --notes "Source: https://github.com/sbcl/sbcl"
            ../build/sbcl-ucrt64-$SBCL_HASH.zip
            ../sbcl-source/output/sbcl-$(cat ../sbcl-source/output/version.txt).msi
