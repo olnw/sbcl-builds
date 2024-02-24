@@ -3,7 +3,7 @@ name: Build and release
 on:
   workflow_dispatch:
   schedule:
-  - cron: "1 15 * * *"
+  - cron: "15 1 * * *"
 
 jobs:
   build:
