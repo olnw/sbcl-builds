@@ -52,7 +52,7 @@ jobs:
       run: |
            echo CURRENT DIR: $(pwd), WORKSPACE DIR: $GITHUB_WORKSPACE
            cd sbcl-builds 
-           unzip sbcl-2.3.2.zip
+           unzip sbcl-2.4.1.zip
            cd ../sbcl-source
            sh make.sh --prefix=../build --xc-host=$SBCL_HOME/sbcl.exe
            unset SBCL_HOME
