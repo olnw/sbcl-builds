@@ -46,7 +46,7 @@ jobs:
       shell: msys2 {0}
       run: |
            echo "SBCL_HASH=$(cd sbcl-source && git rev-parse --short HEAD)" >> $GITHUB_ENV
-           echo "SBCL_HOME=$GITHUB_WORKSPACE/sbcl-builds" >> $GITHUB_ENV
+           echo "SBCL_HOME=$GITHUB_WORKSPACE/sbcl-builds/lib/sbcl" >> $GITHUB_ENV
 
     - name: Build SBCL
       shell: msys2 {0}
@@ -55,7 +55,7 @@ jobs:
            cd sbcl-builds 
            unzip sbcl-2.4.1.zip
            cd ../sbcl-source
-           sh make.sh --prefix=../build --xc-host=$SBCL_HOME/sbcl.exe
+           sh make.sh --prefix=../build --xc-host="../sbcl-builds/bin/sbcl.exe --no-userinit --no-sysinit"
            unset SBCL_HOME
            sh install.sh   
            cd "$GITHUB_WORKSPACE"/build
