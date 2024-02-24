@@ -2,7 +2,7 @@ name: Build and release
 
 on:
   schedule:
-  - cron: "0 0 * * *"
+  - cron: "1 15 * * *"
 
 jobs:
   build:
