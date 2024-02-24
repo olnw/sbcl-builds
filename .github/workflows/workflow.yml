@@ -1,7 +1,7 @@
 name: Build and release
 
 on:
-  workflow-dispatch:
+  workflow_dispatch:
   schedule:
   - cron: "1 15 * * *"
 
