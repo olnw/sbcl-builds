@@ -1,5 +1,9 @@
 # Nightly Windows builds of SBCL
 
+The Windows build of SBCL from https://www.sbcl.org tends to be a bit outdated. I have created this repository for those who need or prefer to use a newer version. Builds are done daily at 01:15 UTC.
+
+N.B. These are not official builds of SBCL. Official releases can be downloaded from https://www.sbcl.org/platform-table.html.
+
 # How to install
 1. Download and extract the ZIP file from the [latest release](https://github.com/olnw/sbcl-builds/releases/latest). It should have a name like `sbcl-ucrt64-<some numbers and letters>.zip`.
 2. Create an environment variable called `SBCL_HOME` with the value `<path to sbcl directory>/lib/sbcl`.
