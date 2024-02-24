@@ -1,8 +1,8 @@
 # Nightly Windows builds of SBCL
 
-The Windows build of SBCL from https://www.sbcl.org tends to be a bit outdated. I have created this repository for those who need or prefer to use a newer version. Builds are done daily at 01:15 UTC.
+The official Windows build of SBCL tends to be a bit outdated. I created this repository for those who need or prefer to use a newer version. Builds are done daily at 01:15 UTC.
 
-N.B. These are not official builds of SBCL. Official releases can be downloaded from https://www.sbcl.org/platform-table.html.
+N.B. These are not official SBCL builds. Official releases can be obtained from https://www.sbcl.org/platform-table.html.
 
 ## Installation
 Download and run the [latest MSI installer](https://github.com/olnw/sbcl-builds/releases/latest). That's it!
