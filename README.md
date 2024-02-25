@@ -1,5 +1,7 @@
 # Nightly Windows builds of SBCL
 
+[![Build and release](https://github.com/olnw/sbcl-builds/actions/workflows/workflow.yml/badge.svg)](https://github.com/olnw/sbcl-builds/actions/workflows/workflow.yml)
+
 The official Windows build of SBCL tends to be a bit outdated. I created this repository for those who need or prefer to use a newer version. Builds are done daily at 01:15 UTC.
 
 N.B. These are not official SBCL builds. Official releases can be obtained from https://www.sbcl.org/platform-table.html.
